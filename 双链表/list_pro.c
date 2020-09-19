@@ -139,7 +139,7 @@ Node *Insert_List_Tail(Node *head)
     n = Len_List(len);
     Node *p, *s;
     s = Create_Node();
-    s = Pos_List(head,n);
+    p = Pos_List(head,n);
     p->next = s;
     s->pre = p;
     len++;
@@ -149,25 +149,28 @@ Node *Insert_List_Tail(Node *head)
 /*  插到任意位置之前  */
 Node *Insert_Before_List(Node *head)
 {
-    int n,data,pos_n;
+    int n,pos_n;
     Node *s, *p;
     printf("请输入要插入结点的位置：");
     scanf("%d", &n);
     printf("请输入要插入的节点的值：");
-    scanf("%d", &data);
+    
     pos_n = Len_List(len);
     if(n > pos_n) //如果输入的位置 > 链表总长度，则指向尾结点
         head = Insert_List_Tail(head);
-    else if(n <= 1)
-        head = Insert_List_Head(head);
     else
     {
-        s = Pos_List(head, n);
-        p = Create_Node();
-        s->pre->next = p;
-        p->pre = s->pre;
-        p->next = s;
-        s->pre = p;
+        if(n <= 1)
+            head = Insert_List_Head(head);
+        else
+        {
+            s = Pos_List(head, n);
+            p = Create_Node();
+            s->pre->next = p;
+            p->pre = s->pre;
+            p->next = s;
+            s->pre = p;
+        }
     }
     len++;
     return head;
@@ -176,25 +179,28 @@ Node *Insert_Before_List(Node *head)
 /*  插到任意位置之后  */
 Node *Insert_After_List(Node *head)
 {
-    int n,data,pos_n;
+    int n,pos_n;
     Node *s, *p;
     printf("请输入要插入结点的位置：");
     scanf("%d", &n);
     printf("请输入要插入的节点的值：");
-    scanf("%d", &data);
+
     pos_n = Len_List(len);
     if(n >= pos_n) //如果输入的位置 > 链表总长度，则指向尾结点
         head = Insert_List_Tail(head);
-    else if(n < 1)
-        head = Insert_List_Head(head);
-    else
+    else 
     {
-        s = Pos_List(head, n);
-        p = Create_Node();
-        p->next = s->next;
-        s->next->pre = p;
-        s->next = p;
-        p->pre = s;
+        if(n < 1)
+        head = Insert_List_Head(head);
+        else
+        {
+            s = Pos_List(head, n);
+            p = Create_Node();
+            p->next = s->next;
+            s->next->pre = p;
+            s->next = p;
+            p->pre = s;
+        }
     }
     len++;
     return head;
@@ -250,6 +256,19 @@ Node *Delete_List(Node *head)
     return head;
 }
 
+/*  打印链表的长度、正向遍历、反向遍历  */
+void Print_List_Info(Node *head)
+{   
+    printf("链表的长度为：%d\n",len = Len_List(len));
+    printf("正向遍历双向链表：");
+    Out_Front_List(head);
+    printf("\n链表的长度为：%d\n",len = Len_List(len));
+    
+    printf("\n反向遍历双向链表：");
+    Out_Reverse_List(head);
+    printf("\n链表的长度为：%d\n",len = Len_List(len));
+}
+
 /***********************************************
  * 函数声明
 ***********************************************/
@@ -267,7 +286,7 @@ Node *Insert_After_List(Node *head);    //插到任意位置之后
 Node *Delete_Start_List(Node *head);    //删除头结点
 Node *Delete_End_List(Node *head);      //删除尾结点
 Node *Delete_List(Node *head);          //删除指定位置的节点
-
+void Print_List_Info(Node *head);       //打印链表的长度、正向遍历、反向遍历
 
 int main(int argc, const char* argv[])
 {
@@ -277,21 +296,35 @@ int main(int argc, const char* argv[])
     scanf("%d",&len);
     printf("请为双向链表赋值：");
     head = Create_List(len);
-    printf("链表的长度为：%d\n",len = Len_List(len));
+    Print_List_Info(head);
 
-    printf("正向遍历双向链表：");
-    Out_Front_List(head);
-    printf("\n链表的长度为：%d\n",len = Len_List(len));
-    
-    printf("\n反向遍历双向链表：");
-    Out_Reverse_List(head);
-    printf("\n链表的长度为：%d\n",len = Len_List(len));
+    printf("\n请输入在链表头部插入结点的值：");
+    head = Insert_List_Head(head);
+    Print_List_Info(head);
 
-    
+    printf("\n请输入在链表尾部插入结点的值：");
+    head = Insert_List_Tail(head);
+    Print_List_Info(head);
 
+    printf("\n插入到任意位置之前：");
+    head = Insert_Before_List(head);
+    Print_List_Info(head);
 
+    printf("\n插入到任意位置之后：");
+    head = Insert_After_List(head);
+    Print_List_Info(head);
 
+    printf("\n删除头结点：");
+    head = Delete_Start_List(head);
+    Print_List_Info(head);
 
+    printf("\n删除尾结点：");
+    head = Delete_End_List(head);
+    Print_List_Info(head);
+
+    printf("\n删除指定位置的结点：");
+    head = Delete_List(head);
+    Print_List_Info(head);
 
 	return 0;
 }
