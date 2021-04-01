@@ -25,7 +25,7 @@ void Swap(int *a, int *b)
 /*  冒泡排序   */
 void Bubble_Sort(int *arr, int len)
 {
-    int i,j,temp;
+    int i,j;
 
     for(i=0; i<len-1; i++)
     {
